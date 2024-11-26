@@ -6,11 +6,11 @@
 /*   By: mpajot-t <mpajot-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 09:23:04 by mpajot-t          #+#    #+#             */
-/*   Updated: 2024/11/21 10:27:03 by mpajot-t         ###   ########.fr       */
+/*   Updated: 2024/11/26 10:20:37 by mpajot-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "printf.h"
+#include "ft_printf.h"
 
 int	ft_putchar(char c)
 {
@@ -18,74 +18,65 @@ int	ft_putchar(char c)
 	return (1);
 }
 
-int	ft_putstr(char *c)
+static int	print_nb(int n)
 {
-	int	i;
+	char	nbr[12];
+	int		i;
+	int		len;
+	int		orig_len;
 
 	i = 0;
-	while (c[i])
+	if (n < 0)
 	{
-		write (1, &c[i], 1);
-		i++;
+		nbr[i++] = '-';
+		n = -n;
 	}
-	return (i);
+	len = ft_intlen(n);
+	orig_len = len + i;
+	while (n > 0)
+	{
+		nbr[i + len - 1] = (n % 10) + '0';
+		n /= 10;
+		len--;
+	}
+	write (1, nbr, orig_len);
+	return (orig_len);
 }
 
-int	hexaformat(void	*ptr)
-{
-	
-}
-
-void	ft_putnbr(int n)
+int	ft_putnbr(int n)
 {
 	if (n == -2147483648)
 	{
 		write (1, "-2147483648", 11);
-		return ;
+		return (11);
 	}
 	if (n == 0)
 	{
 		write (1, "0", 1);
-		return ;
+		return (1);
 	}
-	if (n < 0)
-	{
-		write (1, "-", 1);
-		n = -n;
-	}
-	if (n > 9)
-	{
-		ft_putnbr_fd(n / 10);
-		ft_putnbr_fd(n % 10);
-	}
-	else
-		ft_putchar_fd (n + '0');
-	return (ft_intlen(n));
+	return (print_nb(n));
 }
 
-void	ft_putunsnbr(unsigned int n)
+int	ft_putunsnbr(unsigned int n)
 {
-	if (n == -2147483648)
-	{
-		write (1, "-2147483648", 11);
-		return ;
-	}
+	char	nbr[12];
+	int		len;
+	int		orig_len;
+
 	if (n == 0)
 	{
 		write (1, "0", 1);
-		return ;
+		return (1);
 	}
-	if (n < 0)
+	len = ft_unsintlen(n);
+	orig_len = len;
+	while (len > 0)
 	{
-		write (1, "-", 1);
-		n = -n;
+		nbr[len - 1] = (n % 10) + '0';
+		n /= 10;
+		len--;
 	}
-	if (n > 9)
-	{
-		ft_putnbr_fd(n / 10);
-		ft_putnbr_fd(n % 10);
-	}
-	else
-		ft_putchar_fd (n + '0');
-	return (ft_intlen(n));
-}	
+	write (1, nbr, orig_len);
+	return (orig_len);
+}

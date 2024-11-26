@@ -6,22 +6,32 @@
 /*   By: mpajot-t <mpajot-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 10:25:55 by mpajot-t          #+#    #+#             */
-/*   Updated: 2024/11/21 10:26:25 by mpajot-t         ###   ########.fr       */
+/*   Updated: 2024/11/26 10:17:30 by mpajot-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "printf.h"
+#include "ft_printf.h"
 
 int	ft_intlen(int a)
 {
 	int	i;
 
 	i = 0;
-	if (a < 0)
+	if (a <= 0)
+		i++;
+	while (a != 0)
 	{
-		a = -a;
+		a /= 10;
 		i++;
 	}
+	return (i);
+}
+
+int	ft_unsintlen(unsigned int a)
+{
+	int	i;
+
+	i = 0;
 	if (a == 0)
 		return (1);
 	while (a > 0)
